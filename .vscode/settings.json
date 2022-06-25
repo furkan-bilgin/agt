@@ -1,3 +1,4 @@
 {
-    "python.defaultInterpreterPath": "./Scripts/python.exe"
+    "python.defaultInterpreterPath": "./Scripts/python.exe",
+    "git.ignoreLimitWarning": true
 }
