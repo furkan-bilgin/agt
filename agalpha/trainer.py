@@ -82,7 +82,8 @@ class Trainer:
                             num_parents_mating=num_parents_mating,
                             initial_population=initial_population,
                             fitness_func=fitness_func,
-                            on_generation=callback_generation)
+                            on_generation=callback_generation,
+                            )
     def set_df(self, df):
         self.ga_instance.df = df
 
@@ -95,6 +96,12 @@ class Trainer:
             except KeyboardInterrupt:
                 pool.terminate()
                 pool.join()
+
+    def save_best_solution(self):
+        sol = self.ga_instance.best_solution()[0]
+
+        self.ga_instance.best_solutions.append(sol)
+
 #pipenv run python main.py --dataset data/crypto_processed/albt-usd.csv
 
 def ignore_signals():

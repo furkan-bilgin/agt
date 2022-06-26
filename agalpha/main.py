@@ -41,6 +41,8 @@ if __name__ == "__main__":
         tqdm.write(f"Fitness = {fitness}")
         if generation % 100 == 0:
             trainer.set_df(next_df())
+            trainer.save_best_solution()
+            
         if generation % 300 == 0:
             trainer.ga_instance.save(os.path.join(ga_save_path, f"checkpoint.gen.{generation}"))
             tqdm.write(f"Saved checkpoint in gen {generation}")
