@@ -1,3 +1,4 @@
+from concurrent.futures import process
 import os
 from time import sleep
 import numpy as np
@@ -11,6 +12,7 @@ from tqdm.auto import tqdm
 parser = argparse.ArgumentParser()
 parser.add_argument("--datapath", help="path of datasets")
 parser.add_argument("--gencount", help="number of generations", type=int)
+parser.add_argument("--processcount", help="number of processes while training", type=int)
 parser.add_argument("--checkpointpath", help="path of checkpoint")
 args = parser.parse_args()
 SPLIT_COEFFICIENT = 1000
@@ -51,7 +53,7 @@ if __name__ == "__main__":
 
     data_list = glob(os.path.join(args.datapath, "*"))
     
-    trainer = Trainer(gen_callback=gen_callback, gen_count=args.gencount)
+    trainer = Trainer(gen_callback=gen_callback, gen_count=args.gencount, process_count=args.processcount)
     pbar = tqdm(total=args.gencount)
     ga_save_path = args.checkpointpath
 

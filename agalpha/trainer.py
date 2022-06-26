@@ -1,5 +1,4 @@
 from multiprocessing import Pool
-import multiprocessing
 import signal
 import numpy as np
 from pandas import DataFrame
@@ -59,9 +58,10 @@ def fitness_func(solution, solution_index):
     return tg.fitness() 
 
 class Trainer:
-    def __init__(self, gen_callback=None, gen_count=1000):
+    def __init__(self, gen_callback=None, gen_count=1000, process_count=10):
         self._init_ga(gen_count)
         self.gen_callback = gen_callback
+        self.process_count = process_count
         
     def _init_ga(self, gen_count):
         global fitness_func, fitness_wrapper, model
@@ -89,7 +89,7 @@ class Trainer:
 
     def run(self):
         global ignore_signals
-        with Pool(processes=10, initializer=ignore_signals) as pool:
+        with Pool(processes=self.process_count, initializer=ignore_signals) as pool:
             try:
                 self.ga_instance.pool = pool
                 self.ga_instance.run()
