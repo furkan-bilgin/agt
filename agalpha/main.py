@@ -14,6 +14,8 @@ parser.add_argument("--gencount", help="number of generations", type=int)
 parser.add_argument("--checkpointpath", help="path of checkpoint")
 args = parser.parse_args()
 SPLIT_COEFFICIENT = 1000
+SAVE_CHECKPOINT_GENERATIONS = 300
+CHANGE_DATASET_GENERATIONS = 100
 
 if __name__ == "__main__":
     df_list = []
@@ -23,7 +25,6 @@ if __name__ == "__main__":
             n = df_list.pop(0)
             if len(n.index) < SPLIT_COEFFICIENT / 2:
                 return next_df()
-            
             return n
         
         full_df = pd.read_csv(data_list.pop(0))
@@ -39,11 +40,11 @@ if __name__ == "__main__":
         
         pbar.update(1)
         tqdm.write(f"Fitness = {fitness}")
-        if generation % 100 == 0:
+        if generation % CHANGE_DATASET_GENERATIONS == 0:
             trainer.set_df(next_df())
             trainer.save_best_solution()
-            
-        if generation % 300 == 0:
+
+        if generation % SAVE_CHECKPOINT_GENERATIONS == 0:
             trainer.ga_instance.save(os.path.join(ga_save_path, f"checkpoint.gen.{generation}"))
             tqdm.write(f"Saved checkpoint in gen {generation}")
             
@@ -55,5 +56,4 @@ if __name__ == "__main__":
     ga_save_path = args.checkpointpath
 
     trainer.set_df(next_df())
-
     trainer.run()
