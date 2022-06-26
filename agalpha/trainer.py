@@ -100,6 +100,8 @@ class Trainer:
                                 on_generation=callback_generation,
                                 )
     def set_df(self, df):
+        global current_df
+        current_df = df
         self.ga_instance.df = df
 
     def run(self):
