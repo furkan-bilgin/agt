@@ -8,6 +8,7 @@ import pygad
 
 from tradegame import TradeActionException, TradeGame
 
+HAS_GPU = torch.cuda.is_available()
 DONT_PICKLE = [ "on_generation", "pool" ]
 class PooledGA(pygad.GA):
     def cal_pop_fitness(self):
@@ -28,6 +29,9 @@ model = torch.nn.Sequential(torch.nn.Linear(22, 75),
                                 torch.nn.Tanh(),
                                 torch.nn.Linear(75, 13),
                                 torch.nn.Tanh())
+
+if HAS_GPU:
+    model.cuda()
 current_df = None
 
 def fitness_wrapper(data):
@@ -42,6 +46,9 @@ def fitness_func(solution, solution_index):
 
     def predictor(inputs):
         inputs = torch.tensor([inputs], dtype=torch.float32)
+
+        if HAS_GPU:
+            inputs.cuda()
 
         return pygad.torchga.predict(model=model,
                             solution=solution,
