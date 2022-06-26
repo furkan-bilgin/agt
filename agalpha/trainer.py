@@ -32,6 +32,7 @@ model = torch.nn.Sequential(torch.nn.Linear(22, 75),
 
 if HAS_GPU:
     model.cuda()
+
 current_df = None
 
 def fitness_wrapper(data):
@@ -42,7 +43,7 @@ def fitness_wrapper(data):
     return fitness_func(solution, 0)
     
 def fitness_func(solution, solution_index):
-    global model, current_df
+    global model, current_df, HAS_GPU
 
     def predictor(inputs):
         inputs = torch.tensor([inputs], dtype=torch.float32)
