@@ -47,7 +47,8 @@ def fitness_func(solution, solution_index):
 
     def predictor(inputs):
         inputs = torch.tensor([inputs], dtype=torch.float32)
-
+        print(inputs)
+        print(model)
         if HAS_GPU:
             inputs.cuda()
 
