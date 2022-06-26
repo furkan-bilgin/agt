@@ -85,24 +85,36 @@ class Trainer:
         num_parents_mating = 3 # Number of solutions to be selected as parents in the mating pool.
         initial_population = torch_ga.population_weights # Initial population of network weights
 
-        self.ga_instance = PooledGA(num_generations=num_generations,
+        if HAS_GPU:
+            self.ga_instance = pygad.GA(num_generations=num_generations,
                             num_parents_mating=num_parents_mating,
                             initial_population=initial_population,
                             fitness_func=fitness_func,
                             on_generation=callback_generation,
                             )
+        else:
+            self.ga_instance = PooledGA(num_generations=num_generations,
+                                num_parents_mating=num_parents_mating,
+                                initial_population=initial_population,
+                                fitness_func=fitness_func,
+                                on_generation=callback_generation,
+                                )
     def set_df(self, df):
         self.ga_instance.df = df
 
     def run(self):
-        global ignore_signals
-        with Pool(processes=self.process_count, initializer=ignore_signals) as pool:
-            try:
-                self.ga_instance.pool = pool
-                self.ga_instance.run()
-            except KeyboardInterrupt:
-                pool.terminate()
-                pool.join()
+        if HAS_GPU:
+            self.ga_instance.run()
+        else:
+                
+            global ignore_signals
+            with Pool(processes=self.process_count, initializer=ignore_signals) as pool:
+                try:
+                    self.ga_instance.pool = pool
+                    self.ga_instance.run()
+                except KeyboardInterrupt:
+                    pool.terminate()
+                    pool.join()
 
     def save_best_solution(self):
         sol = self.ga_instance.best_solution()[0]
