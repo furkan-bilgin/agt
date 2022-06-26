@@ -1,5 +1,6 @@
 from cmath import nan
 from enum import Enum
+import multiprocessing
 from matplotlib.font_manager import win32InstalledFonts
 from pandas import DataFrame
 import numpy as np
@@ -22,7 +23,7 @@ class TradeGame:
         self.initial_wallet = wallet
         self.tokens = 0 # tokens we have 
         self.prev_memory = np.zeros(NUM_MEMORIES)
-        
+
         while np.isnan(self.df["i_macd"][self.current_step]):
             self.current_step += 1
 
