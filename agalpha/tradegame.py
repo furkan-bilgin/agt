@@ -24,10 +24,8 @@ class TradeGame:
         self.tokens = 0 # tokens we have 
         self.prev_memory = np.zeros(NUM_MEMORIES)
 
-        while np.isnan(self.df["i_macd"][self.current_step]):
+        while np.isnan(self.df["i_macd"].iloc[self.current_step]):
             self.current_step += 1
-
-        self.current_step -= 1
     
     def step(self, predictor):
         self.current_step += 1
@@ -39,18 +37,18 @@ class TradeGame:
     def predict_nn(self, predictor):
         cs = self.current_step
         inputs = [
-            self.df["open"][cs],
-            self.df["close"][cs],
-            self.df["high"][cs],
-            self.df["low"][cs],
-            self.df["volume"][cs],
-            self.df["i_macd"][cs],
-            self.df["i_rsi"][cs],
-            self.df["i_awesome"][cs],
-            self.df["i_stochastic_rsi_d"][cs],
-            self.df["i_stochastic_rsi_k"][cs],
-            self.df["i_bollinger_h"][cs],
-            self.df["i_bollinger_l"][cs]
+            self.df["open"].iloc[cs],
+            self.df["close"].iloc[cs],
+            self.df["high"].iloc[cs],
+            self.df["low"].iloc[cs],
+            self.df["volume"].iloc[cs],
+            self.df["i_macd"].iloc[cs],
+            self.df["i_rsi"].iloc[cs],
+            self.df["i_awesome"].iloc[cs],
+            self.df["i_stochastic_rsi_d"].iloc[cs],
+            self.df["i_stochastic_rsi_k"].iloc[cs],
+            self.df["i_bollinger_h"].iloc[cs],
+            self.df["i_bollinger_l"].iloc[cs]
         ] 
 
         inputs.extend(self.prev_memory)
@@ -60,7 +58,7 @@ class TradeGame:
         return outputs[:-NUM_MEMORIES].detach().numpy()
 
     def current_token_price(self):
-        return self.df["close"][self.current_step]
+        return self.df["close"].iloc[self.current_step]
 
     def fitness(self):
         return self.wallet + (self.tokens * self.current_token_price()) - self.initial_wallet

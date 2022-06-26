@@ -9,6 +9,7 @@ import pygad
 
 from tradegame import TradeActionException, TradeGame
 
+DONT_PICKLE = [ "on_generation", "pool" ]
 class PooledGA(pygad.GA):
     def cal_pop_fitness(self):
         global fitness_wrapper
@@ -16,6 +17,8 @@ class PooledGA(pygad.GA):
 
         pop_fitness = np.array(pop_fitness)
         return pop_fitness
+    def __getstate__(self):
+        return {k: v for k, v in self.__dict__.items() if k not in DONT_PICKLE }
 
 
 model = torch.nn.Sequential(torch.nn.Linear(22, 75),
@@ -72,7 +75,7 @@ class Trainer:
                            num_solutions=20)
                            
         num_generations = gen_count # Number of generations.
-        num_parents_mating = 5 # Number of solutions to be selected as parents in the mating pool.
+        num_parents_mating = 3 # Number of solutions to be selected as parents in the mating pool.
         initial_population = torch_ga.population_weights # Initial population of network weights
 
         self.ga_instance = PooledGA(num_generations=num_generations,
