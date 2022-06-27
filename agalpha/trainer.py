@@ -45,10 +45,10 @@ def fitness_wrapper(data):
 def fitness_func(solution, solution_index):
     global model, current_df, HAS_GPU
 
+    solution = torch.tensor([solution], dtype=torch.float32)
     def predictor(inputs):
         inputs = torch.tensor([inputs], dtype=torch.float32)
-        solution = torch.tensor([solution], dtype=torch.float32)
-        
+
         if HAS_GPU:
             inputs.cuda()
             solution.cuda()
