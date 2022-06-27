@@ -49,7 +49,7 @@ def fitness_func(solution, solution_index):
         inputs = torch.tensor([inputs], dtype=torch.float32)
         if HAS_GPU:
             inputs.cuda()
-            print("yes cuda!")
+            solution.cuda()
 
         return pygad.torchga.predict(model=model,
                             solution=solution,
