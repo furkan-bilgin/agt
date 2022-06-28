@@ -17,7 +17,7 @@ parser.add_argument("--checkpointpath", help="path of checkpoint")
 args = parser.parse_args()
 
 SPLIT_COEFFICIENT = 750
-SAVE_CHECKPOINT_GENERATIONS = 300
+SAVE_CHECKPOINT_GENERATIONS = 40
 CHANGE_DATASET_GENERATIONS = 100
 
 if __name__ == "__main__":
@@ -45,9 +45,9 @@ if __name__ == "__main__":
         tqdm.write(f"Fitness = {fitness}")
         if generation % CHANGE_DATASET_GENERATIONS == 0:
             trainer.set_df(next_df())
-            trainer.save_best_solution()
 
         if generation % SAVE_CHECKPOINT_GENERATIONS == 0:
+            trainer.save_best_solution()
             trainer.ga_instance.save(os.path.join(ga_save_path, f"checkpoint.gen.{generation}"))
             tqdm.write(f"Saved checkpoint in gen {generation}")
             

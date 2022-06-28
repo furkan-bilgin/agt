@@ -69,7 +69,7 @@ def fitness_func(solution, solution_index):
     return tg.fitness() 
 
 class Trainer:
-    def __init__(self, gen_callback=None, gen_count=1000, process_count=15):
+    def __init__(self, gen_callback=None, gen_count=1000, process_count=12):
         self._init_ga(gen_count)
         self.gen_callback = gen_callback
         self.process_count = process_count
@@ -123,7 +123,7 @@ class Trainer:
                     pool.join()
 
     def save_best_solution(self):
-        sol = self.ga_instance.best_solution()[0]
+        sol = self.ga_instance.best_solution()[1]
 
         self.ga_instance.best_solutions.append(sol)
 
