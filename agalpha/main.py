@@ -15,7 +15,8 @@ parser.add_argument("--gencount", help="number of generations", type=int)
 parser.add_argument("--processcount", help="number of processes while training", type=int)
 parser.add_argument("--checkpointpath", help="path of checkpoint")
 args = parser.parse_args()
-SPLIT_COEFFICIENT = 1000
+
+SPLIT_COEFFICIENT = 750
 SAVE_CHECKPOINT_GENERATIONS = 300
 CHANGE_DATASET_GENERATIONS = 100
 

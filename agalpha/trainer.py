@@ -83,10 +83,10 @@ class Trainer:
                 self.gen_callback(ga_instance)
 
         torch_ga = torchga.TorchGA(model=model,
-                           num_solutions=20)
+                           num_solutions=100)
                            
         num_generations = gen_count # Number of generations.
-        num_parents_mating = 3 # Number of solutions to be selected as parents in the mating pool.
+        num_parents_mating = 7 # Number of solutions to be selected as parents in the mating pool.
         initial_population = torch_ga.population_weights # Initial population of network weights
 
         if HAS_GPU:
