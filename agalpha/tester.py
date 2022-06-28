@@ -16,4 +16,23 @@ parser.add_argument("--test", help="test path")
 args = parser.parse_args()
 ga_instance : pygad.GA = pygad.load(args.path)
 
-df = pd.read_csv(args.test)
+
+for best in ga_instance.best_solutions:
+    df = pd.read_csv(args.test)
+
+    tg = TradeGame(df)
+
+    def predictor(inputs):
+        inputs = torch.tensor([inputs], dtype=torch.float32)
+
+        return pygad.torchga.predict(model=model,
+                            solution=best,
+                            data=inputs)
+
+    while not tg.is_done():
+        try:
+            tg.step(predictor)
+        except TradeActionException:
+            pass
+
+    print(tg.fitness())

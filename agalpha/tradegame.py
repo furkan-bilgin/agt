@@ -4,6 +4,7 @@ import multiprocessing
 from matplotlib.font_manager import win32InstalledFonts
 from pandas import DataFrame
 import numpy as np
+from numpy import interp
 
 NUM_MEMORIES = 10
 
@@ -36,12 +37,20 @@ class TradeGame:
 
     def predict_nn(self, predictor):
         cs = self.current_step
+        def inter(val):
+            return interp(val, [0, 5000], [-2, 2])
+
         inputs = [
             self.df["open"].iloc[cs],
             self.df["close"].iloc[cs],
             self.df["high"].iloc[cs],
             self.df["low"].iloc[cs],
             self.df["volume"].iloc[cs],
+        ] 
+
+        inputs = inter(inputs).tolist()
+
+        inputs.extend([
             self.df["i_macd"].iloc[cs],
             self.df["i_rsi"].iloc[cs],
             self.df["i_awesome"].iloc[cs],
@@ -49,7 +58,7 @@ class TradeGame:
             self.df["i_stochastic_rsi_k"].iloc[cs],
             self.df["i_bollinger_h"].iloc[cs],
             self.df["i_bollinger_l"].iloc[cs]
-        ] 
+        ])
 
         inputs.extend(self.prev_memory)
         outputs = predictor(inputs)[0]

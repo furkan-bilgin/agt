@@ -45,7 +45,8 @@ def fitness_wrapper(data):
 def fitness_func(solution, solution_index):
     global model, current_df, HAS_GPU
 
-    solution = torch.tensor([solution], dtype=torch.float32)
+    if HAS_GPU:
+        solution = torch.tensor([solution], dtype=torch.float32)
     def predictor(inputs):
         inputs = torch.tensor([inputs], dtype=torch.float32)
 
@@ -68,7 +69,7 @@ def fitness_func(solution, solution_index):
     return tg.fitness() 
 
 class Trainer:
-    def __init__(self, gen_callback=None, gen_count=1000, process_count=10):
+    def __init__(self, gen_callback=None, gen_count=1000, process_count=15):
         self._init_ga(gen_count)
         self.gen_callback = gen_callback
         self.process_count = process_count
