@@ -17,7 +17,8 @@ args = parser.parse_args()
 ga_instance : pygad.GA = pygad.load(args.path)
 
 
-for best in ga_instance.best_solutions:
+for best in ga_instance.population:
+    print(best)
     df = pd.read_csv(args.test)
 
     tg = TradeGame(df)

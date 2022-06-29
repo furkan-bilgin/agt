@@ -17,7 +17,7 @@ parser.add_argument("--checkpointpath", help="path of checkpoint")
 args = parser.parse_args()
 
 SPLIT_COEFFICIENT = 750
-SAVE_CHECKPOINT_GENERATIONS = 40
+SAVE_CHECKPOINT_GENERATIONS = 80
 CHANGE_DATASET_GENERATIONS = 100
 
 if __name__ == "__main__":

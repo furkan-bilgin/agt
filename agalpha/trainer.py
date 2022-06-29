@@ -123,7 +123,7 @@ class Trainer:
                     pool.join()
 
     def save_best_solution(self):
-        sol = self.ga_instance.best_solution()[1]
+        sol = self.ga_instance.best_solution()[0]
 
         self.ga_instance.best_solutions.append(sol)
 
